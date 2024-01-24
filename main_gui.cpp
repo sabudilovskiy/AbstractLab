@@ -54,7 +54,7 @@ void ErrorLexsWindow(parse::Lex lex, std::string_view source){
         auto end_line = std::find(it, end, '\n');
         if (!in_error()){
             int len = end_line - cur_text;
-            im_hui::Text("%.*s\n", len, cur_text);
+            im_hui::Text("%.*s", len, cur_text);
             if (end_line == end) {
                 it = end_line;
             }
@@ -64,46 +64,40 @@ void ErrorLexsWindow(parse::Lex lex, std::string_view source){
             cur_line_n++;
         }
         else{
-            im_hui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_ItemSpacing, {0, 8});
-            while (it != end){
+            im_hui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_ItemSpacing, {0, 4});
+            for (;it != end; it++){
                 cur_text = address_elem(it);
                 if (before_error() && *cur_text != '\n'){
                     im_hui::Text("%.*s", 1, cur_text);
                     im_hui::SameLine();
                     ++cur_column;
-                    ++it;
                 }
                 else if (before_error() && *cur_text == '\n'){
                     im_hui::NewLine();
                     cur_column = 1;
                     ++cur_line_n;
-                    ++it;
                 }
                 else if (char_error()){
                     im_hui::TextColored(kRed, "%.*s", 1, cur_text);
                     im_hui::SameLine();
                     ++cur_column;
-                    ++it;
                 }
                 else if (after_error()){
                     int len = std::find(cur_text, end, '\n') - cur_text;
                     im_hui::Text("%.*s", len, cur_text);
-                    im_hui::NewLine();
-                    ++it;
                     ++cur_line_n;
+                    ++it;
                     break;
                 }
                 else if (*cur_text != '\n'){
                     im_hui::TextColored(kYellow, "%.*s", 1, cur_text);
                     im_hui::SameLine();
                     ++cur_column;
-                    ++it;
                 }
-                else if (*cur_text == '\n'){
+                else {
                     im_hui::NewLine();
                     ++cur_line_n;
                     ++cur_column;
-                    ++it;
                 }
             }
             im_hui::PopStyleVar();
