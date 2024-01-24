@@ -161,9 +161,7 @@ void DisplayLexText(const parse::Lex& lex, std::string_view label_suffix){
     }
 }
 
-void DisplayLex(const parse::Lex& lex, std::size_t& number){
-    using namespace std::literals;
-    number++;
+void DisplayLex(const parse::Lex& lex, std::size_t number){
     auto sv = ToStringView(lex.type);
     std::string label = fmt::format("[{}]: {}", number, sv);
     if (im_hui::CollapsingHeader(label.data())){
@@ -177,8 +175,8 @@ void DisplayLex(const parse::Lex& lex, std::size_t& number){
 void LexWindow(const std::span<parse::Lex> lexs){
     im_hui::Begin("Распаршенные лексемы");
     std::size_t number = 0;
-    using namespace std::literals;
     for (auto& lex : lexs){
+        number++;
         DisplayLex(lex, number);
     }
     im_hui::End();
