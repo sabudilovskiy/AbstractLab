@@ -33,6 +33,7 @@ target_include_directories(${PROJECT_NAME}_src PRIVATE ${CMAKE_CURRENT_SOURCE_DI
 hello_imgui_add_app(${PROJECT_NAME}_gui main_gui.cpp)
 target_link_libraries(${PROJECT_NAME}_gui PRIVATE ${PROJECT_NAME}_src)
 target_include_directories(${PROJECT_NAME}_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(${PROJECT_NAME}_gui PRIVATE fmt::fmt)
 
 ##################
 #####console######

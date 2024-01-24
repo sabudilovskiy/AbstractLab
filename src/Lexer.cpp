@@ -12,11 +12,12 @@ namespace parse {
             cur_position_.Consume(*it_);
             ParseSymbol(*it_);
         }
-        if (current_state_ == error_state_) {
-            EmplaceLex(error_state_);
-        } else {
+        if (it_ == end_) {
             cur_position_.NextColumn();
             ParseEnd();
+        }
+        if (current_state_ == error_state_) {
+            EmplaceLex(error_state_);
         }
         return std::move(parsed_);
     }

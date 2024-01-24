@@ -97,6 +97,14 @@ namespace parse{
         return std::nullopt;
     };
 
+    template <LexType lex_type >
+    auto end_matcher = [](char ch) -> std::optional<StateChange> {
+        return StateChange{
+            .lex_type = lex_type,
+            .next_state = LexType::End
+        };
+    };
+
     Lexer CreateLexer() {
         using enum LexType;
         Lexer lexer(Start, Error);
@@ -122,6 +130,7 @@ namespace parse{
         lexer.AddTransition(Number, continue_number);
         lexer.AddTransition(Number, f_matcher<Number, Space, ' '>);
         lexer.AddTransition(Number, f_matcher<Number, EndLine, '\n'>);
+        lexer.AddTransition(Number, end_matcher<Number>);
 
         lexer.AddTransition(FirstEq, f_matcher<AS, Space, ' '>);
         lexer.AddTransition(FirstEq, f_matcher<AS, EndLine, '\n'>);
